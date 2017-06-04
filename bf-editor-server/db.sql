@@ -16,7 +16,7 @@ CREATE TABLE `users`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=10;
 
 INSERT INTO `users` (`id`, `user_name`, `user_password`, `user_role`, `user_phone`, `user_email`, `last_password_resetDate`) 
-VALUES (1, 'chengfan', '123456', 'VISITOR',  '12345678901', '123@qq.com', '2017-05-24 00:00:00');
+VALUES (1, 'chengfan', '123456', 'USER',  '12345678901', '123@qq.com', '2017-05-24 00:00:00');
 INSERT INTO `users` (`id`, `user_name`, `user_password`, `user_role`, `user_phone`, `user_email`, `last_password_resetDate`) 
 VALUES (2, 'ADMIN', '123456', 'ADMIN', '12345678901', '123@qq.com', '2017-05-24 00:00:01');
 

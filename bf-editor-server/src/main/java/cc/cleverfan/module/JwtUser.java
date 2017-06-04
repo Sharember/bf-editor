@@ -19,6 +19,14 @@ public class JwtUser implements UserDetails {
     private final Collection<? extends GrantedAuthority> authorities;
     private final Date lastPasswordResetDate;
 
+    /**
+     * @param id
+     * @param username
+     * @param password
+     * @param email
+     * @param authorities
+     * @param lastPasswordResetDate
+     */
     public JwtUser(
             int id,
             String username,
