@@ -50,6 +50,12 @@ const mutations = {
   setJianShuList(state, data){
     state.jianshuArticleList = data
     console.log(state.jianshuArticleList)
+  },
+  postArticle(state, data) {
+    //判断是否发送成功
+    if (data.contains()){
+
+    }
   }
 }
 export default mutations

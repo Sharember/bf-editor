@@ -8,7 +8,7 @@ const state = {
   title: '',
 
   user: {
-    id:'1',
+    id:'10',
     name: '',
     password: ''
   },

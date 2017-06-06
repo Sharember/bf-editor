@@ -4,10 +4,11 @@
       <el-dialog title="文章发布" v-model="pushFileVisible">
         <el-form :model="push">
           <el-form-item label="选择网站" :label-width="formLabelWidth">
-            <el-select v-model="push.site" placeholder="请选择网站">
-              <el-option label="csdn" value="csdn"></el-option>
-              <el-option label="github" value="github"></el-option>
-            </el-select>
+            <el-checkbox :indeterminate="isIndeterminate" v-model="checkedSites" @change="handleCheckAllChange">全选</el-checkbox>
+            <div style="margin: 15px 0;"></div>
+            <el-checkbox-group v-model="checkedSites" @change="handleCheckedSitesChange">
+              <el-checkbox v-for="site in sites" :label="site" :key="site">{{site}}</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -34,25 +35,65 @@
     </div>
 </template>
 <script>
-
+const siteOptions = ['51CTO', '网易博客', '博客园', 'csdn'];
 export default{
   name: 'editHeader',
   data(){
       return{
-        push : {
-          site : '',
-        },
+
         pushFileVisible : false,
-        formLabelWidth: '120px'
+        formLabelWidth: '120px',
+        checkAll: true,
+        checkedSites: ['网易博客', '博客园'],
+        sites: siteOptions,
+        isIndeterminate: true
       }
   },
   methods : {
+    handleCheckAllChange(event) {
+      this.checkedSites = event.target.checked ? siteOptions : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedSitesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.sites.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.sites.length;
+    },
     publish : function (){
-      if(this.push.site == "" || this.push.site == null){
-        alert(请选择网站)
+      if(this.checkedSites == "" || this.checkedSites == null){
+        alert("请选择网站")
       }else{
         this.pushFileVisible = false
-        alert("成功发布到" + this.push.site)
+        const _state = this.$store.state
+        let objArr = []
+        this.checkedSites.forEach(function (value) {
+          switch(value) {
+            case "网易博客":
+              objArr.push({id: 2, name : '网易博客'})
+              break;
+            case "博客园":
+              objArr.push({id: 3, name : '博客园'})
+              break;
+          }
+        });
+        const PushArticle = {
+          userId: '',
+          title: '',
+          description: '',
+          content: '',
+          postSite: [],
+        }
+        //拼凑数据
+        const fileId = _state.nowData.nowFile
+        PushArticle.userId = _state.user.id
+        PushArticle.postSite = objArr
+        PushArticle.title = _state.fileList[_state.nowData.nowDir - 1].list.find((o) => o.id == fileId).title
+        //PushArticle.content = _state.fileList.find( dir => dir.id == dirId ).find( file => file.id == fileId ).content
+        PushArticle.content = _state.nowData.editData.htmlValue
+        //传递到后台
+        this.$store.dispatch('postArticle', PushArticle)
+        //判断是否成功
+
       }
     }
   }

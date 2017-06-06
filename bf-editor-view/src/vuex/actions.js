@@ -16,7 +16,7 @@ const actions = {
       data: data
     }).then(function(res){
       context.commit(types.LOGIN, res.data.token)
-      console.log("login  " + res.data.token)
+      console.log("login  " + res.data)
     }).catch(function(err){
       console.log(err)
     })
@@ -77,6 +77,20 @@ const actions = {
   },
   addFile(context, fileName){
     context.commit('addFile', fileName)
+  },
+  postArticle(context, data){
+    axios({
+      method: 'post',
+      url: '/auth/article',
+      data: data,
+    }).then(function(res){
+      //router.push('/login')
+      console.log(res)
+      alert("成功发布")
+    }).catch(function(err){
+      console.log(err)
+    })
+
   }
 }
 
